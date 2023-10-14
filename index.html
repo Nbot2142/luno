@@ -1,35 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Generowanie klucza</title>
-    <script>
-        function generateKey() {
-            const key = document.getElementById("key").value;
-
-            if (key === "jailbreak") {
-                // Generowanie 10-znakowego klucza
-                const generatedKey = generateRandomKey(10);
-                document.getElementById("result").textContent = "Wygenerowany klucz: " + generatedKey;
-            } else {
-                document.getElementById("result").textContent = "Nieautoryzowany dostęp";
-            }
-        }
-
-        function generateRandomKey(length) {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let randomKey = '';
-            for (let i = 0; i < length; i++) {
-                const randomIndex = Math.floor(Math.random() * characters.length);
-                randomKey += characters.charAt(randomIndex);
-            }
-            return randomKey;
-        }
-    </script>
+    <title>Generowanie kodu</title>
 </head>
 <body>
-    <label for="key">Klucz:</label>
-    <input type="text" id="key" value="jailbreak">
-    <button onclick="generateKey()">Generuj klucz</button>
-    <p id="result"></p>
+    <h1>Generowanie kodu</h1>
+    <form id="apiForm">
+        Key: <input type="text" id="key" name="key" value="getkey"><br>
+        Value: <input type="text" id="value" name="value" value="jailbreak"><br>
+    </form>
+    <p>Wygenerowany Kod: <span id="generatedCode"></span></p>
+
+    <script>
+        const keyInput = document.getElementById('key');
+        const valueInput = document.getElementById('value');
+        const generatedCodeElement = document.getElementById('generatedCode');
+
+        function generateCode() {
+            const key = keyInput.value;
+            const value = valueInput.value;
+
+            if (key === "getkey" && value === "jailbreak") {
+                const generatedCode = generateRandomCode(10);
+                generatedCodeElement.textContent = generatedCode;
+            } else {
+                generatedCodeElement.textContent = "";
+            }
+        }
+
+        function generateRandomCode(length) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let code = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                code += characters.charAt(randomIndex);
+            }
+            return code;
+        }
+
+        // Obsługa zdarzenia w czasie rzeczywistym
+        keyInput.addEventListener('input', generateCode);
+        valueInput.addEventListener('input', generateCode);
+
+        // Inicjalne generowanie kodu
+        generateCode();
+    </script>
 </body>
 </html>
