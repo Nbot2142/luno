@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Luno API</title>
+    <title>Aktualizacja pliku JSON</title>
 </head>
 <body>
     <script>
-        const token = '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'; // Twój token dostępu
+        const token = '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'; // Twój nowy token dostępu
         const repoOwner = 'Nbot2142'; // Własność repozytorium
         const repoName = 'luno'; // Nazwa repozytorium
         const filePath = 'codes/games.json'; // Ścieżka do pliku JSON w repozytorium
@@ -36,6 +36,7 @@
             body: JSON.stringify({
                 message: 'Aktualizacja pliku JSON',
                 content: btoa(JSON.stringify(newContent)), // Zawartość pliku w formie base64
+                sha: '', // Pobierz aktualny SHA pliku JSON
             }),
         })
         .then(response => {
