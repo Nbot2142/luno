@@ -1,31 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Generowanie kodu</title>
+    <title>API Example</title>
 </head>
 <body>
-    <h1>Generowanie kodu</h1>
-    <form id="apiForm">
-        Key: <input type="text" id="key" name="key" value="getkey"><br>
-        Value: <input type="text" id="value" name="value" value="jailbreak"><br>
-    </form>
-    <p>Wygenerowany Kod: <span id="generatedCode"></span></p>
+    <h1>API Example</h1>
+    <p>Key: getkey</p>
+    <p>Value: jailbreak</p>
+    <p>Wygenerowany kod: <span id="generatedCode"></span></p>
 
     <script>
-        const keyInput = document.getElementById('key');
-        const valueInput = document.getElementById('value');
-        const generatedCodeElement = document.getElementById('generatedCode');
+        const urlParams = new URLSearchParams(window.location.search);
+        const key = urlParams.get('key');
+        const value = urlParams.get('value');
 
-        function generateCode() {
-            const key = keyInput.value;
-            const value = valueInput.value;
-
-            if (key === "getkey" && value === "jailbreak") {
-                const generatedCode = generateRandomCode(10);
-                generatedCodeElement.textContent = generatedCode;
-            } else {
-                generatedCodeElement.textContent = "";
-            }
+        if (key === "getkey" && value === "jailbreak") {
+            const generatedCode = generateRandomCode(10);
+            document.getElementById('generatedCode').textContent = generatedCode;
+        } else {
+            document.getElementById('generatedCode').textContent = "Nie spełniono warunków do wygenerowania kodu.";
         }
 
         function generateRandomCode(length) {
@@ -37,13 +30,6 @@
             }
             return code;
         }
-
-        // Obsługa zdarzenia w czasie rzeczywistym
-        keyInput.addEventListener('input', generateCode);
-        valueInput.addEventListener('input', generateCode);
-
-        // Inicjalne generowanie kodu
-        generateCode();
     </script>
 </body>
 </html>
