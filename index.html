@@ -6,14 +6,30 @@
 <body>
     
     <script>
-        // Funkcja, która zmieni zawartość pliku JSON po załadowaniu strony
+        // Funkcja do generowania losowego kodu o danej długości
+        function generateRandomCode(length) {
+            const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+            let result = '';
+            const charactersLength = characters.length;
+            for (let i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result;
+        }
+
+        // Funkcja do zmiany zawartości pliku JSON po załadowaniu strony
         window.addEventListener('load', function() {
+            const data = {
+                Game: 'Jailbreak',
+                code: generateRandomCode(19) // 19 to długość kodu
+            };
+
             fetch('/codes/games.json', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ nowaZawartosc: 'Nowa zawartość JSON' })
+                body: JSON.stringify(data)
             })
             .then(response => {
                 if (response.ok) {
