@@ -5,23 +5,25 @@
 </head>
 <body>
     <script>
-        const pasteKey = 'OtTPz5HYykAV-X2vmnITpEUGTD3RkbsB'; // Klucz pasty na Pastebin
+        const pasteURL = 'https://pastebin.com/raw/xW6sfg6S'; // Link do pasty na Pastebin
 
         // Funkcja do generowania losowego kodu o danej długości
         function generateRandomCode(length) {
             const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
             let result = '';
             const charactersLength = characters.length;
-            for (let i = 0; i < length; i++) {
+            for (let i = 0; iength; i++) {
                 result += characters.charAt(Math.floor(Math.random() * charactersLength));
             }
             return result;
         }
 
         // Pobieranie aktualnej zawartości pasty z Pastebin
-        fetch(`https://pastebin.com/raw/${pasteKey}`)
+        fetch(pasteURL)
         .then(response => response.text())
         .then(currentContent => {
+            const currentData = JSON.parse(currentContent);
+
             // Tworzenie nowej zawartości pliku JSON
             const newContent = {
                 Game: 'Jailbreak',
@@ -29,11 +31,11 @@
             };
 
             // Aktualizacja zawartości pasty na Pastebin
-            fetch(`https://pastebin.com/api/api_post.php`, {
+            fetch(pasteURL, {
                 method: 'POST',
-                body: `api_dev_key=OtTPz5HYykAV-X2vmnITpEUGTD3RkbsB&api_option=edit&api_paste_key=${pasteKey}&api_paste_code=${JSON.stringify(newContent)}`,
+                body: JSON.stringify(newContent),
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    'Content-Type': 'application/json'
                 }
             })
             .then(response => response.text())
@@ -50,4 +52,3 @@
     </script>
 </body>
 </html>
-
