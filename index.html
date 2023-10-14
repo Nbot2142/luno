@@ -6,19 +6,23 @@
         function generateKey() {
             const key = document.getElementById("key").value;
 
-            // Sprawdź, czy klucz "getkey" ma wartość "jailbreak"
             if (key === "jailbreak") {
-                fetch("/generate-key?key=" + key)
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById("result").textContent = "Wygenerowany klucz: " + data.key;
-                    })
-                    .catch(error => {
-                        document.getElementById("result").textContent = "Błąd: " + error.message;
-                    });
+                // Generowanie 10-znakowego klucza
+                const generatedKey = generateRandomKey(10);
+                document.getElementById("result").textContent = "Wygenerowany klucz: " + generatedKey;
             } else {
                 document.getElementById("result").textContent = "Nieautoryzowany dostęp";
             }
+        }
+
+        function generateRandomKey(length) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let randomKey = '';
+            for (let i = 0; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                randomKey += characters.charAt(randomIndex);
+            }
+            return randomKey;
         }
     </script>
 </head>
