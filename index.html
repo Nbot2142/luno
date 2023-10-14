@@ -1,35 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>API Example</title>
+    <title>Moja Strona</title>
 </head>
 <body>
-    <h1>API Example</h1>
-    <p>Key: getkey</p>
-    <p>Value: jailbreak</p>
-    <p>Wygenerowany kod: <span id="generatedCode"></span></p>
-
+    
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const key = urlParams.get('key');
-        const value = urlParams.get('value');
-
-        if (key === "getkey" && value === "jailbreak") {
-            const generatedCode = generateRandomCode(10);
-            document.getElementById('generatedCode').textContent = generatedCode;
-        } else {
-            document.getElementById('generatedCode').textContent = "Nie spełniono warunków do wygenerowania kodu.";
-        }
-
-        function generateRandomCode(length) {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let code = '';
-            for (let i = 0; i < length; i++) {
-                const randomIndex = Math.floor(Math.random() * characters.length);
-                code += characters.charAt(randomIndex);
-            }
-            return code;
-        }
+        // Funkcja, która zmieni zawartość pliku JSON po załadowaniu strony
+        window.addEventListener('load', function() {
+            fetch('/codes/games.json', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nowaZawartosc: 'Nowa zawartość JSON' })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Plik JSON został zaktualizowany.');
+                } else {
+                    console.error('Wystąpił błąd podczas aktualizacji pliku JSON.');
+                }
+            })
+            .catch(error => {
+                console.error('Błąd: ' + error);
+            });
+        });
     </script>
 </body>
 </html>
