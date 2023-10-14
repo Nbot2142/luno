@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Moja Strona</title>
+    <title>Luno API</title>
 </head>
 <body>
-    
     <script>
+        const token = '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'; // Twój token dostępu
+        const repoOwner = 'WŁAŚCICIEL_REPO'; // Własność repozytorium
+        const repoName = 'NAZWA_REPO'; // Nazwa repozytorium
+        const filePath = 'codes/games.json'; // Ścieżka do pliku JSON w repozytorium
+
         // Funkcja do generowania losowego kodu o danej długości
         function generateRandomCode(length) {
             const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -17,30 +21,32 @@
             return result;
         }
 
-        // Funkcja do zmiany zawartości pliku JSON po załadowaniu strony
-        window.addEventListener('load', function() {
-            const data = {
-                Game: 'Jailbreak',
-                code: generateRandomCode(19) // 19 to długość kodu
-            };
+        // Tworzenie nowej zawartości pliku JSON
+        const newContent = {
+            Game: 'Jailbreak',
+            code: generateRandomCode(19) // 19 to długość kodu
+        };
 
-            fetch('/codes/games.json', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => {
-                if (response.ok) {
-                    console.log('Plik JSON został zaktualizowany.');
-                } else {
-                    console.error('Wystąpił błąd podczas aktualizacji pliku JSON.');
-                }
-            })
-            .catch(error => {
-                console.error('Błąd: ' + error);
-            });
+        // Zaktualizowanie zawartości pliku JSON w repozytorium
+        fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
+            method: 'PUT',
+            headers: {
+                Authorization: `token ${token}`,
+            },
+            body: JSON.stringify({
+                message: 'Aktualizacja pliku JSON',
+                content: btoa(JSON.stringify(newContent)), // Zawartość pliku w formie base64
+            }),
+        })
+        .then(response => {
+            if (response.status === 200) {
+                console.log('Plik JSON został zaktualizowany.');
+            } else {
+                console.error('Wystąpił błąd podczas aktualizacji pliku JSON.');
+            }
+        })
+        .catch(error => {
+            console.error('Błąd: ' + error);
         });
     </script>
 </body>
