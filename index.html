@@ -1,39 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Luno api</title>
-</head>
-<body>
+    <title>Generowanie klucza</title>
     <script>
-        // Odbieramy parametr "info" z adresu URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const infoParam = urlParams.get('info');
-        
-        // Inicjalizujemy pusty klucz
-        let key = '';
+        function generateKey() {
+            const key = document.getElementById("key").value;
 
-        // Sprawdzamy, czy parametr "info" to "jailbreak"
-        if (infoParam === 'jailbreak') {
-            // Tutaj generujemy losowy klucz
-            key = generateRandomKey();
-        }
-
-        // Wyświetlamy klucz jako odpowiedź w formie JSON
-        const response = { key: key };
-        document.write(JSON.stringify(response));
-
-        // Funkcja do generowania losowego klucza
-        function generateRandomKey() {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            const keyLength = 10; // Długość klucza
-
-            let key = '';
-            for (let i = 0; i < keyLength; i++) {
-                const randomIndex = Math.floor(Math.random() * characters.length);
-                key += characters.charAt(randomIndex);
+            // Sprawdź, czy klucz "getkey" ma wartość "jailbreak"
+            if (key === "jailbreak") {
+                fetch("/generate-key?key=" + key)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById("result").textContent = "Wygenerowany klucz: " + data.key;
+                    })
+                    .catch(error => {
+                        document.getElementById("result").textContent = "Błąd: " + error.message;
+                    });
+            } else {
+                document.getElementById("result").textContent = "Nieautoryzowany dostęp";
             }
-            return key;
         }
     </script>
+</head>
+<body>
+    <label for="key">Klucz:</label>
+    <input type="text" id="key" value="jailbreak">
+    <button onclick="generateKey()">Generuj klucz</button>
+    <p id="result"></p>
 </body>
 </html>
