@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API w HTML</title>
+</head>
+<body>
+    <script>
+        // Sprawdzamy, czy w adresie URL występuje parametr "info" o wartości "jailbreak"
+        const urlParams = new URLSearchParams(window.location.search);
+        const infoParam = urlParams.get('info');
+
+        if (infoParam === 'jailbreak') {
+            // Generujemy losowy klucz
+            const key = generateRandomKey();
+            
+            // Wyświetlamy klucz w odpowiedzi
+            document.write(key);
+        }
+
+        // Funkcja do generowania losowego klucza
+        function generateRandomKey() {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            const keyLength = 10; // Długość klucza
+            
+            let key = '';
+            for (let i = 0; i < keyLength; i++) {
+                const randomIndex = Math.floor(Math.random() * characters.length);
+                key += characters.charAt(randomIndex);
+            }
+            return key;
+        }
+    </script>
+</body>
+</html>
