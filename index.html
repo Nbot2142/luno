@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Aktualizacja pliku JSON</title>
+    <title>Aktualizacja pliku JSON na Pastebin</title>
 </head>
 <body>
     <script>
-        const token = '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'; // Twój nowy token dostępu
-        const repoOwner = 'Nbot2142'; // Własność repozytorium
-        const repoName = 'luno'; // Nazwa repozytorium
-        const filePath = 'codes/games.json'; // Ścieżka do pliku JSON w repozytorium
+        const pasteKey = 'OtTPz5HYykAV-X2vmnITpEUGTD3RkbsB'; // Klucz pasty na Pastebin
 
         // Funkcja do generowania losowego kodu o danej długości
         function generateRandomCode(length) {
@@ -21,34 +18,36 @@
             return result;
         }
 
-        // Tworzenie nowej zawartości pliku JSON
-        const newContent = {
-            Game: 'Jailbreak',
-            code: generateRandomCode(19) // 19 to długość kodu
-        };
+        // Pobieranie aktualnej zawartości pasty z Pastebin
+        fetch(`https://pastebin.com/raw/${pasteKey}`)
+        .then(response => response.text())
+        .then(currentContent => {
+            // Tworzenie nowej zawartości pliku JSON
+            const newContent = {
+                Game: 'Jailbreak',
+                code: generateRandomCode(19) // 19 to długość kodu
+            };
 
-        // Zaktualizowanie zawartości pliku JSON w repozytorium
-        fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filePath}`, {
-            method: 'PUT',
-            headers: {
-                Authorization: `token ${token}`,
-            },
-            body: JSON.stringify({
-                message: 'Aktualizacja pliku JSON',
-                content: btoa(JSON.stringify(newContent)), // Zawartość pliku w formie base64
-                sha: '', // Pobierz aktualny SHA pliku JSON
-            }),
-        })
-        .then(response => {
-            if (response.status === 200) {
-                console.log('Plik JSON został zaktualizowany.');
-            } else {
-                console.error('Wystąpił błąd podczas aktualizacji pliku JSON.');
-            }
+            // Aktualizacja zawartości pasty na Pastebin
+            fetch(`https://pastebin.com/api/api_post.php`, {
+                method: 'POST',
+                body: `api_dev_key=OtTPz5HYykAV-X2vmnITpEUGTD3RkbsB&api_option=edit&api_paste_key=${pasteKey}&api_paste_code=${JSON.stringify(newContent)}`,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            .then(response => response.text())
+            .then(result => {
+                console.log('Pasta na Pastebin została zaktualizowana.');
+            })
+            .catch(error => {
+                console.error('Błąd podczas aktualizacji pasty na Pastebin: ' + error);
+            });
         })
         .catch(error => {
-            console.error('Błąd: ' + error);
+            console.error('Błąd podczas pobierania aktualnej zawartości pasty z Pastebin: ' + error);
         });
     </script>
 </body>
 </html>
+
