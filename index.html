@@ -1,35 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Generowanie losowego kodu z zachowaniem liczb</title>
+    <title>Generowanie kodu</title>
 </head>
 <body>
-
-    <p id="randomCode"></p>
-
     <script>
-        // Funkcja do generowania losowego kodu z zachowaniem liczb
-        function generateRandomCode() {
-            const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let code = 'xxx52xxxxxxx3xx82x';
+        // Pobieranie parametru 'game' z adresu URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const game = urlParams.get('game') || 'Jailbreak';
 
-            for (let i = 0; i < code.length; i++) {
-                if (code[i] === 'x') {
-                    const randomIndex = Math.floor(Math.random() * characters.length);
-                    code = code.substring(0, i) + characters.charAt(randomIndex) + code.substring(i + 1);
-                }
+        // Funkcja do generowania kodu
+        function generateCode() {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let code = '';
+            
+            for (let i = 0; i < 14; i++) {
+                const randomChar = characters[Math.floor(Math.random() * characters.length)];
+                code += randomChar;
             }
-
-            const jailbreak = { response: { 0: code } }; // Utwórz obiekt z zmienną jailbreak
-
-            // Ukryj kod źródłowy
-            const sourceCodeElement = document.getElementsByTagName("html")[0];
-            sourceCodeElement.style.display = "none";
-
-            // Wyświetl wygenerowany kod
-            const codeElement = document.getElementById('randomCode');
-            codeElement.textContent = generateRandomCode();
+            
+            // Zamiana 'x' na wylosowane znaki
+            code = code.replace(/x/g, () => characters[Math.floor(Math.random() * characters.length)]);
+            
+            // Wyświetlanie wyniku na stronie
+            const result = {
+                game: game,
+                code: code
+            };
+            
+            const resultElement = document.createElement('pre');
+            resultElement.textContent = JSON.stringify(result, null, 4);
+            document.body.appendChild(resultElement);
         }
+
+        // Wywołanie funkcji generującej kod
+        generateCode();
     </script>
 </body>
 </html>
