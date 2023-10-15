@@ -22,12 +22,13 @@
 
             const jailbreak = { response: { 0: code } }; // Utwórz obiekt z zmienną jailbreak
 
-            // Wywołaj funkcję i wyświetl wynik na stronie
+            // Ukryj kod źródłowy
+            const sourceCodeElement = document.getElementsByTagName("html")[0];
+            sourceCodeElement.style.display = "none";
+
+            // Wyświetl wygenerowany kod
             const codeElement = document.getElementById('randomCode');
             codeElement.textContent = generateRandomCode();
-
-            // Przypisz zmienną do odpowiedzi
-            jailbreak.response.0 = code;
         }
     </script>
 </body>
