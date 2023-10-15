@@ -1,54 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Aktualizacja pliku JSON na Pastebin</title>
+    <title>Generowanie losowego kodu z zachowaniem liczb</title>
 </head>
 <body>
-    <script>
-        const pasteURL = 'https://pastebin.com/raw/xW6sfg6S'; // Link do pasty na Pastebin
 
-        // Funkcja do generowania losowego kodu o danej długości
-        function generateRandomCode(length) {
-            const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-            let result = '';
-            const charactersLength = characters.length;
-            for (let i = 0; iength; i++) {
-                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    <p id="randomCode"></p>
+
+    <script>
+        // Funkcja do generowania losowego kodu z zachowaniem liczb
+        function generateRandomCode() {
+            const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let code = 'xxx52xxxxxxx3xx82x';
+
+            for (let i = 0; i < code.length; i++) {
+                if (code[i] === 'x') {
+                    const randomIndex = Math.floor(Math.random() * characters.length);
+                    code = code.substring(0, i) + characters.charAt(randomIndex) + code.substring(i + 1);
+                }
             }
-            return result;
+
+            return code;
         }
 
-        // Pobieranie aktualnej zawartości pasty z Pastebin
-        fetch(pasteURL)
-        .then(response => response.text())
-        .then(currentContent => {
-            const currentData = JSON.parse(currentContent);
-
-            // Tworzenie nowej zawartości pliku JSON
-            const newContent = {
-                Game: 'Jailbreak',
-                code: generateRandomCode(19) // 19 to długość kodu
-            };
-
-            // Aktualizacja zawartości pasty na Pastebin
-            fetch(pasteURL, {
-                method: 'POST',
-                body: JSON.stringify(newContent),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.text())
-            .then(result => {
-                console.log('Pasta na Pastebin została zaktualizowana.');
-            })
-            .catch(error => {
-                console.error('Błąd podczas aktualizacji pasty na Pastebin: ' + error);
-            });
-        })
-        .catch(error => {
-            console.error('Błąd podczas pobierania aktualnej zawartości pasty z Pastebin: ' + error);
-        });
+        // Wywołaj funkcję i wyświetl wynik na stronie
+        const codeElement = document.getElementById('randomCode');
+        codeElement.textContent = generateRandomCode();
     </script>
 </body>
 </html>
