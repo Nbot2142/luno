@@ -10,7 +10,7 @@
     <script>
         // Funkcja do generowania losowego kodu z zachowaniem liczb
         function generateRandomCode() {
-            const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             let code = 'xxx52xxxxxxx3xx82x';
 
             for (let i = 0; i < code.length; i++) {
@@ -20,12 +20,15 @@
                 }
             }
 
-            return code;
-        }
+            const jailbreak = { response: { 0: code } }; // Utwórz obiekt z zmienną jailbreak
 
-        // Wywołaj funkcję i wyświetl wynik na stronie
-        const codeElement = document.getElementById('randomCode');
-        codeElement.textContent = generateRandomCode();
+            // Wywołaj funkcję i wyświetl wynik na stronie
+            const codeElement = document.getElementById('randomCode');
+            codeElement.textContent = generateRandomCode();
+
+            // Przypisz zmienną do odpowiedzi
+            jailbreak.response.0 = code;
+        }
     </script>
 </body>
 </html>
